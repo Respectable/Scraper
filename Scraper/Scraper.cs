@@ -22,10 +22,10 @@ namespace Scraper
 
         public void Scrape()
         {
-            IEnumerable<string> links = _linker.GetLinks();
-            foreach (string link in links)
+            IEnumerable<Link> links = _linker.GetLinks();
+            foreach (Link link in links)
             {
-                _writer.Write(_parser.Parse(new StreamReader(link)));
+                _writer.Write(_parser.Parse(link));
             }
         }
     }

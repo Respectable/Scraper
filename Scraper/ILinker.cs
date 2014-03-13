@@ -5,6 +5,6 @@ namespace Scraper
 {
     public interface ILinker
     {
-        IEnumerable<String> GetLinks();
+        IEnumerable<Link> GetLinks();
     }
 }

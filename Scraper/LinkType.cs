@@ -1,4 +1,4 @@
-﻿public enum DataFileOptions
+﻿public enum LinkType
 {
     PlayByPlay,
     BoxScore,

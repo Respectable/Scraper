@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Scraper.NBA.BBR.Linker;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,37 +15,40 @@ namespace Scraper.BBR.Linker
     {
         private DateTime _startDate;
         private DateTime _endDate;
-        private DataFileOptions _options;
+        //PBP, Shots, or Box
+        private IBBRLinkParser _parser;
         private const string Url = "www.basketball-reference.com/boxscores/index.cgi?month={0}&day={1}&year={2}";
 
         //TODO
-        public bool IncludePreSeason { get; set; }
-        public bool IncludePostSeason { get; set; }
+        //public bool IncludePreSeason { get; set; }
+        //public bool IncludePostSeason { get; set; }
 
-        public BBRLinker(DateTime start, DateTime end, DataFileOptions options)
+        public BBRLinker(DateTime start, DateTime end, IBBRLinkParser parser)
         {
             _startDate = start;
             _endDate = end;
-            _options = options;
-            IncludePreSeason = false;
-            IncludePostSeason = false;
+            _parser = parser;
+            //IncludePreSeason = false;
+            //IncludePostSeason = false;
         }
 
-        public IEnumerable<string> GetLinks()
+        public IEnumerable<Link> GetLinks()
         {
-            List<string> links = new List<string>();
-            DateTime currentDateTime = _startDate;
-
-            while (!currentDateTime.Equals(_endDate))
-            {
-                links.AddRange(GetDateLinks(currentDateTime));
-                currentDateTime = currentDateTime.AddDays(1);
-            }
-
-            return links;
+            return GetLinks(new List<Link>(), _startDate);
         }
 
-        private IEnumerable<string> GetDateLinks(DateTime date)
+        //inclusive of endDate
+        private IEnumerable<Link> GetLinks(IEnumerable<Link> links, DateTime currentDateTime)
+        {
+            var newLinks = GetDateLinks(currentDateTime);
+
+            if (currentDateTime.Equals(_endDate))
+                return links.Concat(newLinks);
+            else
+                return GetLinks(links.Concat(newLinks), currentDateTime.AddDays(1));
+        }
+
+        private IEnumerable<Link> GetDateLinks(DateTime date)
         {
             WebRequest request = WebRequest.Create(String.Format(Url, date.Month, date.Day, date.Year));
             WebResponse response = request.GetResponse();
@@ -54,6 +58,8 @@ namespace Scraper.BBR.Linker
             {
                 html = sr.ReadToEnd();
             }
+
+            return _parser.ParseString(html);
         }
     }
 }

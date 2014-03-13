@@ -5,6 +5,6 @@ namespace Scraper
 {
     public interface IParser<T>
     {
-        T Parse(StreamReader reader);
+        T Parse(Link link);
     }
 }
