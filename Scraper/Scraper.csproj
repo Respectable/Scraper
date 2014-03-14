@@ -41,11 +41,13 @@
   <ItemGroup>
     <Compile Include="Link.cs" />
     <Compile Include="LinkType.cs" />
+    <Compile Include="NBA\BBR\Linker\BBRLinkBoxScoreParser.cs" />
     <Compile Include="NBA\BBR\Linker\BBRLinker.cs" />
     <Compile Include="ILinker.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="NBA\BBR\Linker\BBRLinkPBPParser.cs" />
+    <Compile Include="NBA\BBR\Linker\BBRLinkShotsParser.cs" />
     <Compile Include="NBA\BBR\Linker\IBBRLinkParser.cs" />
     <Compile Include="Scraper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
