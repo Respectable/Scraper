@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Scraper.NBA.BBR.Linker
 {
-    public class BBRLinkShotsParser
+    public class BBRLinkShotsParser : IBBRLinkParser
     {
         private string _pattern = Regex.Escape(@"/shot-chart/") + @"\d+\w+" + Regex.Escape(@".html");
         private const string _linkStart = @"www.basketball-reference.com/boxscores";
