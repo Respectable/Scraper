@@ -9,15 +9,15 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scraper.BBR.Linker
+namespace Scraper.NBA.BBR.Linker
 {
-    class BBRLinker : ILinker
+    public class BBRLinker : ILinker
     {
         private DateTime _startDate;
         private DateTime _endDate;
         //PBP, Shots, or Box
         private IBBRLinkParser _parser;
-        private const string Url = "www.basketball-reference.com/boxscores/index.cgi?month={0}&day={1}&year={2}";
+        private const string Url = "http://www.basketball-reference.com/boxscores/index.cgi?month={0}&day={1}&year={2}";
 
         //TODO
         //public bool IncludePreSeason { get; set; }
@@ -50,6 +50,7 @@ namespace Scraper.BBR.Linker
 
         private IEnumerable<Link> GetDateLinks(DateTime date)
         {
+            Console.WriteLine(String.Format(Url, date.Month, date.Day, date.Year));
             WebRequest request = WebRequest.Create(String.Format(Url, date.Month, date.Day, date.Year));
             WebResponse response = request.GetResponse();
             Stream data = response.GetResponseStream();

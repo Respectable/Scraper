@@ -11,6 +11,12 @@ namespace Scraper.NBA.BBR.Linker
         private BBRLinkBoxScoreParser _bsParser;
         private BBRLinkShotsParser _shotParser;
 
+        public BBRLinkBoxScore_ShotParser()
+        {
+            _bsParser = new BBRLinkBoxScoreParser();
+            _shotParser = new BBRLinkShotsParser();
+        }
+
         public IEnumerable<Link> ParseString(string text)
         {
             return _bsParser.ParseString(text).Concat(_shotParser.ParseString(text));
