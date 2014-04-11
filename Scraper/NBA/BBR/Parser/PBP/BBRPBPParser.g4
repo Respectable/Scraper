@@ -1,4 +1,4 @@
-parser grammar BBRParser;
+parser grammar BBRPBPParser;
 
 @members
 {
