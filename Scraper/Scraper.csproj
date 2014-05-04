@@ -61,7 +61,6 @@
     <Compile Include="NBA\BBR\Linker\BBRLinkShotsParser.cs" />
     <Compile Include="NBA\BBR\Linker\IBBRLinkParser.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRHTMLScraper.cs" />
-    <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\PBPEvent.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\GameHeader.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\IBBRPBPInterpretable.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\Quarter.cs" />
@@ -86,7 +85,9 @@
     </Antlr4>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Referenced Assemblies\Tidy.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -50,6 +50,7 @@ namespace Scraper.NBA.BBR.Linker
 
         private IEnumerable<Link> GetDateLinks(DateTime date)
         {
+            System.Threading.Thread.Sleep(3000);
             WebRequest request = WebRequest.Create(String.Format(Url, date.Month, date.Day, date.Year));
             WebResponse response = request.GetResponse();
             Stream data = response.GetResponseStream();

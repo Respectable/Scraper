@@ -27,5 +27,14 @@ namespace Scraper.NBA.BBR.Parser.PBP.BBRIntermediate
         {
             get { return _away; }
         }
+
+        public string Interpret()
+        {
+            XmlSerializer serializer = new XmlSerializer(this.GetType());
+            StringWriter writer = new StringWriter();
+
+            serializer.Serialize(writer, this);
+            return writer.ToString();
+        }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace Scraper.NBA.BBR.Parser.PBP.BBRIntermediate
 {
@@ -17,7 +19,7 @@ namespace Scraper.NBA.BBR.Parser.PBP.BBRIntermediate
             _quarterStart = quarterStart;
         }
 
-        public string Quarter
+        public string QuarterInfo
         {
             get { return _quarter; }
         }
@@ -25,6 +27,15 @@ namespace Scraper.NBA.BBR.Parser.PBP.BBRIntermediate
         public bool QuarterStart
         {
             get { return _quarterStart; }
+        }
+
+        public string Interpret()
+        {
+            XmlSerializer serializer = new XmlSerializer(this.GetType());
+            StringWriter writer = new StringWriter();
+
+            serializer.Serialize(writer, this);
+            return writer.ToString();
         }
     }
 }
