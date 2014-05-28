@@ -5,38 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
+using System.Xml;
 
 namespace Scraper.NBA.BBR.Parser.PBP.BBRIntermediate
 {
-    public class TimedEvent : IBBRPBPInterpretable
+    public class TimedEvent
     {
+        public  string Time;
+        public  string PBPEvent;
 
-        private string _time;
-        private string _pbpEvent;
+        public TimedEvent()
+        {
+            Time = "";
+            PBPEvent = "";
+        }
 
         public TimedEvent(string time, string pbpEvent)
         {
-            _time = time;
-            _pbpEvent = pbpEvent;
+            Time = time;
+            PBPEvent = pbpEvent;
         }
 
-        public string Time
-        {
-            get { return _time; }
-        }
-
-        public string PBPEvent
-        {
-            get { return _pbpEvent; }
-        }
-
-        public string Interpret()
-        {
-            XmlSerializer serializer = new XmlSerializer(this.GetType());
-            StringWriter writer = new StringWriter();
-
-            serializer.Serialize(writer, this);
-            return writer.ToString();
-        }
     }
 }

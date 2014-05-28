@@ -4,37 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Scraper.NBA.BBR.Parser.PBP.BBRIntermediate
 {
-    public struct GameHeader : IBBRPBPInterpretable
+    public struct GameHeader
     {
-        private string _home, _away;
+        public string Home, Away;
 
         public GameHeader(string home, string away)
         {
-            _home = home;
-            _away = away;
-        }
-
-        public string Home
-        {
-            get { return _home; }
-        }
-
-        public string Away
-        {
-            get { return _away; }
-        }
-
-        public string Interpret()
-        {
-            XmlSerializer serializer = new XmlSerializer(this.GetType());
-            StringWriter writer = new StringWriter();
-
-            serializer.Serialize(writer, this);
-            return writer.ToString();
+            Home = home;
+            Away = away;
         }
     }
 }

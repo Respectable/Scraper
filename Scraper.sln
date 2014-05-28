@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScraperTest", "ScraperTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBRLinkGenerator", "BBRLinkGenerator\BBRLinkGenerator.csproj", "{F01246BC-812F-4CD1-895A-15FF189B1CCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debug", "Debug\Debug.csproj", "{36F37340-F137-4477-A720-4CCA0CA7037C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F01246BC-812F-4CD1-895A-15FF189B1CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F01246BC-812F-4CD1-895A-15FF189B1CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F01246BC-812F-4CD1-895A-15FF189B1CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36F37340-F137-4477-A720-4CCA0CA7037C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F37340-F137-4477-A720-4CCA0CA7037C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F37340-F137-4477-A720-4CCA0CA7037C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F37340-F137-4477-A720-4CCA0CA7037C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

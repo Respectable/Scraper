@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.IO;
 using Scraper.NBA.BBR.Parser.PBP.BBRIntermediate;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Scraper.NBA.BBR.Parser.PBP
 {
@@ -17,19 +19,7 @@ namespace Scraper.NBA.BBR.Parser.PBP
             //TODO: check encoding of html
             doc.Load(html);
 
-            //foreach (HtmlNode node in doc.DocumentNode.Descendants())
-            //{
-            //    //Console.Out.WriteLine(node.Name + " Line: " + node.Line);
-            //    if (node.Name.Equals("table"))
-            //    {
-            //        foreach (HtmlAttribute att in node.Attributes)
-            //        {
-            //            Console.Out.WriteLine(att.Value);
-            //        }
-            //    }
-            //}
-
-
+            //get table node containing all the tr nodes containing pbp data
             HtmlNode pbpNode = (from node in doc.DocumentNode.Descendants("table")
                                 where node.Attributes["class"] != null
                                       && node.Attributes["class"].Value != null
@@ -37,11 +27,21 @@ namespace Scraper.NBA.BBR.Parser.PBP
                                 select node)
                                 .First();
 
-            foreach (HtmlNode node in pbpNode.Descendants())
+            //annotate all the players appear in 'a' nodes in pbp data
+            List<HtmlNode> trNodes = pbpNode.Descendants("tr").ToList();
+            for (int i = trNodes.Count() - 1; i >= 0; i--)
             {
-                Console.Out.WriteLine(node.Name + " Line: " + node.Line);
+                List<HtmlNode> aNodes = trNodes[i].Descendants("a").ToList();
+                for (int j = aNodes.Count() - 1; j >= 0; j--)
+                {
+                    if (aNodes[j].Attributes.Contains("href"))
+                    {
+                        AddPlayerURL(aNodes[j], aNodes[j].InnerText);
+                    }
+                }
             }
 
+            //get parsed xml from pbp data
             return from tr in pbpNode.Descendants("tr")
                    select ScrapeHelper(tr);
         }
@@ -52,31 +52,35 @@ namespace Scraper.NBA.BBR.Parser.PBP
             {
                 if (trNode.Descendants("th")
                           .Where(x => x.Attributes.Contains("colspan"))
-                          .Count() > 0)
+                          .Count() > 0
+                    && trNode.Descendants("th").Count() < 3)
                 {
-                    return parseQuarterStart(trNode).Interpret();
+                    return Interpret(ParseQuarterStart(trNode));
                 }
                 else
                 {
-                    return parseHeader(trNode).Interpret();
+                    return Interpret(ParseHeader(trNode));
                 }
             }
             else
             {
-                return parseTimedEvent(trNode).Interpret();
+                return Interpret(ParseTimedEvent(trNode));
             }
         }
 
-        private Quarter parseQuarterStart(HtmlNode trNode)
+        private Quarter ParseQuarterStart(HtmlNode trNode)
         {
             string quarterString = trNode.Descendants("th")
                                          .Where(x => x.Attributes.Contains("colspan"))
                                          .First()
-                                         .InnerText;
+                                         .InnerText.Replace('\n', ' ');
+
+            quarterString = CondenseWhitespace(quarterString);
+
             return new Quarter(quarterString, true);
         }
 
-        private GameHeader parseHeader(HtmlNode trNode)
+        private GameHeader ParseHeader(HtmlNode trNode)
         {
             var teams = trNode.Descendants("th")
                               .Where(x => !x.Attributes.Contains("colspan") &&
@@ -86,7 +90,7 @@ namespace Scraper.NBA.BBR.Parser.PBP
             return new GameHeader(teams.Last(), teams.First());
         }
 
-        private TimedEvent parseTimedEvent(HtmlNode trNode)
+        private TimedEvent ParseTimedEvent(HtmlNode trNode)
         {
             string time = trNode.Descendants("td")
                                 .First()
@@ -94,10 +98,39 @@ namespace Scraper.NBA.BBR.Parser.PBP
 
             string pbpEvent = trNode.Descendants("td")
                                     .Skip(1)
-                                    .Select(n => n.InnerText)
-                                    .Aggregate((one, two) => one + two);
+                                    .Select(n => n.InnerText.Replace('\n', ' '))
+                                    .Aggregate((one, two) => one + " " + two);
+
+            pbpEvent = CondenseWhitespace(pbpEvent);
 
             return new TimedEvent(time, pbpEvent);
+        }
+
+        private void AddPlayerURL(HtmlNode aNode, string url)
+        {
+            string newText = "[{" + aNode.Attributes["href"].Value + "} " + aNode.InnerText + "]";
+            aNode.ParentNode.ReplaceChild(HtmlNode.CreateNode(newText), aNode);
+        }
+
+        private string CondenseWhitespace(string strToCondense)
+        {
+
+            strToCondense = strToCondense.Replace('Â', ' ');
+            return System.Text.RegularExpressions.Regex.Replace(strToCondense, @"\s+", " ");
+        }
+
+        private string Interpret(Object o)
+        {
+            string retval = "";
+            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+            ns.Add("", "");
+            StringBuilder sb = new StringBuilder();
+            using (XmlWriter writer = XmlWriter.Create(sb, new XmlWriterSettings() { OmitXmlDeclaration = true }))
+            {
+                new XmlSerializer(o.GetType()).Serialize(writer, o, ns);
+            }
+            retval = sb.ToString();
+            return retval;
         }
     }
 }

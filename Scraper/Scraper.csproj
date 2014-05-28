@@ -62,7 +62,6 @@
     <Compile Include="NBA\BBR\Linker\IBBRLinkParser.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRHTMLScraper.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\GameHeader.cs" />
-    <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\IBBRPBPInterpretable.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\Quarter.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\TimedEvent.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRLexer.g4.cs">

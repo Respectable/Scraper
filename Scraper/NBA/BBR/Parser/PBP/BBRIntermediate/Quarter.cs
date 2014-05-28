@@ -5,37 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
+using System.Xml;
 
 namespace Scraper.NBA.BBR.Parser.PBP.BBRIntermediate
 {
-    public struct Quarter : IBBRPBPInterpretable
+    public struct Quarter
     {
-        private string _quarter;
-        private bool _quarterStart;
+        public string QuarterInfo;
+        public bool QuarterStart;
 
         public Quarter(string quarter, bool quarterStart)
         {
-            _quarter = quarter;
-            _quarterStart = quarterStart;
+            QuarterInfo = quarter;
+            QuarterStart = quarterStart;
         }
 
-        public string QuarterInfo
-        {
-            get { return _quarter; }
-        }
-
-        public bool QuarterStart
-        {
-            get { return _quarterStart; }
-        }
-
-        public string Interpret()
-        {
-            XmlSerializer serializer = new XmlSerializer(this.GetType());
-            StringWriter writer = new StringWriter();
-
-            serializer.Serialize(writer, this);
-            return writer.ToString();
-        }
     }
 }
