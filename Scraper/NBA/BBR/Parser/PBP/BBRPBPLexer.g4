@@ -34,6 +34,7 @@ SEVENTH				:	'7th' ;
 EIGHTH				:	'8th' ;
 QUARTER				:	'Quarter' ;
 OVERTIME			:	'Overtime' ;
+JUNK				:	'('~(')')+')' -> skip ;
 WS_ALT_2			:	(' '|'\t'|'\r'|'\n')+	-> skip;	
 
 //-----------------------------------------------------------
@@ -73,6 +74,7 @@ mode TIMED_EVENT_MODE;
 
 TIME_TAG			:	'<Time>'		->	skip, pushMode(TIME_MODE) ;
 PBP_EVENT_TAG		:	'<PBPEvent>'	->	skip, pushMode(PBP_EVENT_MODE) ;
+TIMED_EVENT_END		:	'</TimedEvent>' ->	skip, popMode ;
 WS_ALT_7			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 
 //--------------------------------------------------------------
@@ -87,7 +89,9 @@ mode PBP_EVENT_MODE;
 
 PBP_EVENT_END		:	'</PBPEvent>'	->	skip, popMode ;
 CURRENT_SCORE		:	[0-9]+'-'[0-9]+ ;
-SCORE_INCREASE		:	'+'[1-3] ;
+ADD_ONE				:	'+1' ;
+ADD_TWO				:	'+2' ;
+ADD_THREE			:	'+3' ;
 PLAYER_TAG			:	'['				->	skip, pushMode(PLAYER_MODE) ;
 START_LITERAL		:	'Start'	;
 OF_LITERAL			:	'of'	;
@@ -156,6 +160,9 @@ DELAY_LITERAL		:	'Delay' | 'delay' ;
 FLAGRANT_LITERAL	:	'flagrant' ;
 TAKE_LITERAL		:	'take' ;
 NUMBER				:	[0-9]+ ;
+SEMI_COLON			:	';' -> skip ;
+OPEN_PAREN			:	'('  -> skip ;
+CLOSED_PAREN		:	')' -> skip ;
 TEXT				:	[a-zA-Z0-9\-.]+ ;
 COLON				:	':' 	-> skip ;
 WS_ALT_9			:	(' '|'\t'|'\r'|'\n')+	-> skip;
@@ -166,6 +173,8 @@ mode PLAYER_MODE;
 
 PLAYER_URL_TAG		:	'{'		->	skip, pushMode(PLAYER_URL_MODE) ;
 PLAYER_END			:	']'		->	skip, popMode ;
+APOSTROPHE			:	'&amp;apos;' ;
+O_UMLAUT			:	'ö' ;
 PLAYER_NAME			:	[a-zA-Z.-]+ ;
 WS_ALT_10			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 
