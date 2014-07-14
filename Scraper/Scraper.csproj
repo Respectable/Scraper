@@ -48,6 +48,11 @@
   <ItemGroup>
     <Compile Include="Link.cs" />
     <Compile Include="LinkType.cs" />
+    <Compile Include="NBADataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NBADataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="NBA\BBR\Linker\BBRLinkAllParser.cs" />
     <Compile Include="NBA\BBR\Linker\BBRLinkBoxScore_ShotParser.cs" />
     <Compile Include="NBA\BBR\Linker\BBRLinkBoxScore_PBPParser.cs" />
@@ -62,7 +67,6 @@
     <Compile Include="NBA\BBR\Linker\IBBRLinkParser.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRHTMLScraper.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\GameHeader.cs" />
-    <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\Quarter.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRIntermediate\TimedEvent.cs" />
     <Compile Include="NBA\BBR\Parser\PBP\BBRLexer.g4.cs">
       <DependentUpon>BBRPBPLexer.g4</DependentUpon>
@@ -70,19 +74,41 @@
     <Compile Include="NBA\BBR\Parser\PBP\BBRParser.g4.cs">
       <DependentUpon>BBRPBPParser.g4</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Scraper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="NBA\BBR\Parser\PBP\BBRPBPLexer.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>Scraper.NBA.BBR.Parser</CustomToolNamespace>
+      <CustomToolNamespace>Scraper.NBA.BBR.Parser.PBP</CustomToolNamespace>
+      <Visitor>True</Visitor>
     </Antlr4>
     <Antlr4 Include="NBA\BBR\Parser\PBP\BBRPBPParser.g4">
       <Generator>MSBuild:Compile</Generator>
-      <CustomToolNamespace>Scraper.NBA.BBR.Parser</CustomToolNamespace>
+      <CustomToolNamespace>Scraper.NBA.BBR.Parser.PBP</CustomToolNamespace>
     </Antlr4>
+    <None Include="app.config" />
+    <None Include="NBADataSet.xsc">
+      <DependentUpon>NBADataSet.xsd</DependentUpon>
+    </None>
+    <None Include="NBADataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>NBADataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="NBADataSet.xss">
+      <DependentUpon>NBADataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Referenced Assemblies\Tidy.dll" />

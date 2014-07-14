@@ -55,7 +55,7 @@ namespace Scraper.NBA.BBR.Parser.PBP
                           .Count() > 0
                     && trNode.Descendants("th").Count() < 3)
                 {
-                    return Interpret(ParseQuarterStart(trNode));
+                    return "";
                 }
                 else
                 {
@@ -66,18 +66,6 @@ namespace Scraper.NBA.BBR.Parser.PBP
             {
                 return Interpret(ParseTimedEvent(trNode));
             }
-        }
-
-        private Quarter ParseQuarterStart(HtmlNode trNode)
-        {
-            string quarterString = trNode.Descendants("th")
-                                         .Where(x => x.Attributes.Contains("colspan"))
-                                         .First()
-                                         .InnerText.Replace('\n', ' ');
-
-            quarterString = CondenseWhitespace(quarterString);
-
-            return new Quarter(quarterString, true);
         }
 
         private GameHeader ParseHeader(HtmlNode trNode)

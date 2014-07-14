@@ -88,10 +88,10 @@ WS_ALT_8			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 mode PBP_EVENT_MODE;
 
 PBP_EVENT_END		:	'</PBPEvent>'	->	skip, popMode ;
-CURRENT_SCORE		:	[0-9]+'-'[0-9]+ ;
-ADD_ONE				:	'+1' ;
-ADD_TWO				:	'+2' ;
-ADD_THREE			:	'+3' ;
+CURRENT_SCORE		:	[0-9]+'-'[0-9]+ ->	skip;
+ADD_ONE				:	'+1'	->	skip;
+ADD_TWO				:	'+2' 	->	skip;
+ADD_THREE			:	'+3' 	->	skip;
 PLAYER_TAG			:	'['				->	skip, pushMode(PLAYER_MODE) ;
 START_LITERAL		:	'Start'	;
 OF_LITERAL			:	'of'	;
@@ -151,7 +151,7 @@ END_LITERAL			:	'End' ;
 DOUBLE				:	'dbl' ;
 VIOLATION_LITERAL	:	'Violation'	| 'violation' ;
 SEC_LITERAL			:	'sec' ;
-OFFICiAL_LITERAL	:	'Official' | 'official' ;
+OFFICIAL_LITERAL	:	'Official' | 'official' ;
 CLOCK_LITERAL		:	'clock' ;
 TECHNICAL_LITERAL	:	'technical' | 'tech';
 KICKED_LITERAL		:	'kicked' ;
@@ -173,9 +173,9 @@ mode PLAYER_MODE;
 
 PLAYER_URL_TAG		:	'{'		->	skip, pushMode(PLAYER_URL_MODE) ;
 PLAYER_END			:	']'		->	skip, popMode ;
-APOSTROPHE			:	'&amp;apos;' ;
-O_UMLAUT			:	'ö' ;
-PLAYER_NAME			:	[a-zA-Z.-]+ ;
+fragment APOSTROPHE	:	'&amp;apos;' ;
+fragment O_UMLAUT	:	'ö' ;
+PLAYER_NAME			:	(APOSTROPHE | O_UMLAUT | [a-zA-Z.-])+ ;
 WS_ALT_10			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 
 //--------------------------------------------------------------
