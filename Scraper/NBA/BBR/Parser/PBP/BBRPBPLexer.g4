@@ -24,16 +24,16 @@ WS_ALT_1			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 mode QUARTER_INFO_MODE;
 
 QUARTER_INFO_END	:	'</QuarterInfo>'	->	skip, popMode ;
-FIRST				:	'1st' ;
-SECOND				:	'2nd' ;
-THIRD				:	'3rd' ;
-FOURTH				:	'4th' ;
-FIFTH				:	'5th' ;
-SIXTH				:	'6th' ;
-SEVENTH				:	'7th' ;
-EIGHTH				:	'8th' ;
-QUARTER				:	'Quarter' ;
-OVERTIME			:	'Overtime' ;
+FIRST				:	'1st' ->	skip;
+SECOND				:	'2nd' ->	skip;
+THIRD				:	'3rd' ->	skip;
+FOURTH				:	'4th' ->	skip;
+FIFTH				:	'5th' ->	skip;
+SIXTH				:	'6th' ->	skip;
+SEVENTH				:	'7th' ->	skip;
+EIGHTH				:	'8th' ->	skip;
+QUARTER				:	'Quarter' ->	skip;
+OVERTIME			:	'Overtime' ->	skip;
 JUNK				:	'('~(')')+')' -> skip ;
 WS_ALT_2			:	(' '|'\t'|'\r'|'\n')+	-> skip;	
 
@@ -41,8 +41,8 @@ WS_ALT_2			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 mode QUARTER_START_MODE;
 
 QUARTER_START_END	:	'</QuarterStart>'	->	skip, popMode ;
-QUARTER_STARTING	:	'true' ;
-QUARTER_ENDING		:	'false' ;
+QUARTER_STARTING	:	'true' ->	skip ;
+QUARTER_ENDING		:	'false' ->	skip ;
 WS_ALT_3			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 
 //==============================================================
@@ -57,14 +57,14 @@ WS_ALT_4			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 //--------------------------------------------------------------
 mode HOME_MODE;
 
-HOME_NAME			:	[a-zA-Z]+ ;
+HOME_NAME			:	[a-zA-Z]+	->	skip;
 HOME_END			:	'</Home>'	->	skip, popMode ;
 WS_ALT_5			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 
 //--------------------------------------------------------------
 mode AWAY_MODE;
 
-AWAY_NAME			:	[a-zA-Z]+ ;
+AWAY_NAME			:	[a-zA-Z]+	->	skip;
 AWAY_END			:	'</Away>'	->	skip, popMode ;
 WS_ALT_6			:	(' '|'\t'|'\r'|'\n')+	-> skip;
 
