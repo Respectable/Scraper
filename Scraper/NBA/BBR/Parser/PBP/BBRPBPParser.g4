@@ -16,35 +16,44 @@ period
 	;
 
 startOfPeriod
-	:	START_LITERAL OF_LITERAL periodIdentifier periodType
+	:	TIME START_LITERAL OF_LITERAL periodIdentifier periodType
 	;
 
 endOfPeriod
-	:	END_LITERAL OF_LITERAL periodIdentifier periodType
+	:	TIME END_LITERAL OF_LITERAL periodIdentifier periodType
 	;
 
 periodIdentifier
-	:	FIRST
-	|	SECOND
-	|	THIRD
-	|	FOURTH
-	|	FIFTH
-	|	SIXTH
-	|	SEVENTH
-	|	EIGHTH
+	:	FIRST_PBP
+	|	SECOND_PBP
+	|	THIRD_PBP
+	|	FOURTH_PBP
+	|	FIFTH_PBP
+	|	SIXTH_PBP
+	|	SEVENTH_PBP
+	|	EIGHTH_PBP
 	;
 
 periodType
-	:	QUARTER
-	|	OVERTIME
+	:	QUARTER_PBP
+	|	OVERTIME_PBP
 	;
 
 player
-	:	PLAYER_URL PLAYER_NAME
+	:	PLAYER_URL PLAYER_NAME+
 	;
 
 play
-	:	QUARTER
+	:	TIME (jumpBall
+			 |	missedShot
+			 |	madeShot
+			 |	rebound
+			 |	foul
+			 |	turnover
+			 |	freeThrow
+			 |	substitution
+			 |	violation
+			 |	technicalFoul)
 	;
 
 jumpBall
@@ -52,13 +61,11 @@ jumpBall
 	;
 
 missedShot
-	:	player MISSES_LITERAL shotValue SHOT_LITERAL FROM_LITERAL NUMBER FEET
-	|	player MISSES_LITERAL shotValue SHOT_LITERAL FROM_LITERAL NUMBER FEET block
+	:	player MISSES_LITERAL shotValue SHOT_LITERAL FROM_LITERAL NUMBER FEET (block | )
 	;
 
 madeShot
-	:	player MAKES_LITERAL shotValue SHOT_LITERAL shotDistance
-	|	player MAKES_LITERAL shotValue SHOT_LITERAL shotDistance assist
+	:	player MAKES_LITERAL shotValue SHOT_LITERAL shotDistance (assist | )
 	;
 
 shotDistance
@@ -76,8 +83,7 @@ shotValue
 	;
 
 rebound
-	:	reboundType REBOUND_TYPE BY_LITERAL player
-	|	reboundType REBOUND_TYPE BY_LITERAL TEAM_LITERAL
+	:	reboundType REBOUND_LITERAL BY_LITERAL (player | TEAM_LITERAL)
 	;
 
 reboundType
@@ -90,7 +96,7 @@ block
 	;
 
 foul
-	:	foulType FOUL_LITERAL BY_LITERAL player
+	:	foulType FOUL_LITERAL BY_LITERAL player (DRAWN_LITERAL BY_LITERAL player | )
 	;
 
 foulType
@@ -103,10 +109,7 @@ foulType
 	;
 
 turnover
-	:	TURNOVER_LITERAL BY_LITERAL player turnoverType
-	|	TURNOVER_LITERAL BY_LITERAL player turnoverType steal
-	|	TURNOVER_LITERAL BY_LITERAL TEAM_LITERAL turnoverType
-	|	TURNOVER_LITERAL BY_LITERAL TEAM_LITERAL turnoverType steal
+	:	TURNOVER_LITERAL BY_LITERAL (player | TEAM_LITERAL) turnoverType (steal | )
 	;
 
 turnoverType
@@ -125,8 +128,7 @@ steal
 	;
 
 freeThrow
-	:	player MISSES_LITERAL freeThrowType FREE_LITERAL THROW_LITERAL NUMBER OF_LITERAL NUMBER
-	|	player MAKES_LITERAL freeThrowType FREE_LITERAL THROW_LITERAL NUMBER OF_LITERAL NUMBER
+	:	player (MISSES_LITERAL | MAKES_LITERAL) freeThrowType FREE_LITERAL THROW_LITERAL NUMBER OF_LITERAL NUMBER
 	;
 
 freeThrowType
@@ -142,8 +144,7 @@ substitution
 	;
 
 violation
-	:	VIOLATION_LITERAL BY_LITERAL TEAM_LITERAL violationType
-	|	VIOLATION_LITERAL BY_LITERAL player violationType
+	:	VIOLATION_LITERAL BY_LITERAL (TEAM_LITERAL | player) violationType
 	;
 
 violationType
